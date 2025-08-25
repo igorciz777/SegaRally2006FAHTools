@@ -12,8 +12,9 @@ void usage(const char* program)
     std::cout << "File Archive File Commands:\n";
     std::cout << "  -csv [DATA.FAI] [DATA.FAB] [output csv] Create CSV File info list\n";
     std::cout << "  -ufab [DATA.FAI] [DATA.FAB] [output dir] Unpack File Archive\n";
-    // std::cout << "  -rfab [DATA.FAI] [DATA.FAB] [input dir] Build File Archive\n";
+    std::cout << "  -ifab [DATA.FAI] [DATA.FAB] [input dir] Import files back to archive\n";
     std::cout << "  -ubin [file.bin] [output dir] Unpack FAH bin File\n";
+    std::cout << "  -ibin [file.bin] [input dir] Import files back to FAH File\n";
     std::cout << std::endl;
 }
 
@@ -42,18 +43,26 @@ int main(int argc, char** argv)
             std::cerr << "Usage: -ubin [file.bin] [output dir] Unpack FAH bin File\n";
             return 1;
         }
-        unpack_file_archive(argv[2], argv[3]);
+        unpack_file_archive(argv[2], argv[2], argv[3]);
+        return 0;
+    };
+    commands["-ibin"] = [](int argc, char** argv) -> int {
+        if (argc < 4) {
+            std::cerr << "Usage: -ibin [file.bin] [input dir] Import files back to FAH File\n";
+            return 1;
+        }
+        import_to_archive(argv[2], argv[2], argv[3]);
         return 0;
     };
 
-    // commands["-rfab"] = [](int argc, char** argv) -> int {
-    //     if (argc < 5) {
-    //         std::cerr << "Usage: -rfab [DATA.FAI] [DATA.FAB] [input dir] Build File Archive\n";
-    //         return 1;
-    //     }
-    //     repack_file_archive(argv[2], argv[3], argv[4]);
-    //     return 0;
-    // };
+    commands["-ifab"] = [](int argc, char** argv) -> int {
+        if (argc < 5) {
+            std::cerr << "Usage: -ifab [DATA.FAI] [DATA.FAB] [input dir] Import files back to archive\n";
+            return 1;
+        }
+        import_to_archive(argv[2], argv[3], argv[4]);
+        return 0;
+    };
 
     commands["-csv"] = [](int argc, char** argv) -> int {
         if (argc < 4) {
@@ -61,15 +70,6 @@ int main(int argc, char** argv)
             return 1;
         }
         create_csv_list(argv[2], argv[3], argv[4]);
-        return 0;
-    };
-
-    commands["-hash"] = [](int argc, char** argv) -> int {
-        if (argc < 3) {
-            return 1;
-        }
-        uint32_t hash = get_hash(argv[2]);
-        std::cout << "Hash: 0x" << std::hex << hash << std::dec << std::endl;
         return 0;
     };
 

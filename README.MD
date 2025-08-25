@@ -8,6 +8,8 @@ Currently, the tool can:
 - Extract the contents of the main `DATA.FAB`/`DATA.FAI` archive.
 - Extract contents of smaller FAH .bin archives found in the main archive.
 - Extract files info to a CSV file.
+- Import files from a directory back into the main archive (file can't be bigger than original + 0x800 padding).
+- Import files from a directory back into a FAH .bin archive (file can't be bigger than original).
 
 Planned features include:
 - Rebuilding the main `DATA.FAB`/`DATA.FAI` archive.
@@ -16,14 +18,16 @@ Planned features include:
 ## Usage
 
 ```shell
-.\sega_fah [cmd] [file|text]
+.\sega_fah [cmd] [files]
 ```
 
 ## Modes
 
 - **-csv [DATA.FAI] [DATA.FAB] [output csv]**: Create a CSV file info list from the archive.
 - **-ufab [DATA.FAI] [DATA.FAB] [output dir]**: Unpack the main file archive to a specified output directory.
+- **-ifab [DATA.FAI] [DATA.FAB] [input dir]**: Import files from a directory back into the main archive.
 - **-ubin [file.bin] [output dir]**: Unpack a FAH .bin file to a specified output directory.
+- **-ibin [file.bin] [input dir]**: Import files from a directory back into a FAH .bin file.
 
 ## Examples
 
@@ -35,9 +39,17 @@ Unpack the main file archive:
 ```shell
 .\sega_fah -ufab DATA.FAI DATA.FAB out
 ```
+Import files back to the main archive:
+```shell
+.\sega_fah -ifab DATA.FAI DATA.FAB in_dir
+```
 Unpack .bin file:
 ```shell
 .\sega_fah -ubin file.bin out
+```
+Import files back to a .bin file:
+```shell
+.\sega_fah -ibin file.bin in_dir
 ```
 
 ## Building
